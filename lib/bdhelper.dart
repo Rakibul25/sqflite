@@ -21,6 +21,6 @@ class DataBaseHelper {
   _initialDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, _dbname);
-    await openDatabase(path, version: _dbversion, onCreate: _oncreate;
+    await openDatabase(path, version: _dbversion, onCreate: _oncreate);
   }
 }
