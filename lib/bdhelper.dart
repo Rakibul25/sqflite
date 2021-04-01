@@ -7,6 +7,10 @@ import 'package:sqflite/sqflite.dart';
 class DataBaseHelper {
   static final _dbname = 'mydb.db';
   static final _dbversion = 1;
+  static final _tablename = 'myTable';
+
+  static final _columnId = '_id';
+  static final _columnName = 'name';
 
   DataBaseHelper._privateConstructor();
   static final DataBaseHelper instance = DataBaseHelper._privateConstructor();
@@ -22,5 +26,14 @@ class DataBaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, _dbname);
     await openDatabase(path, version: _dbversion, onCreate: _oncreate);
+  }
+
+  Future _oncreate(Database db, int version) {
+    db.query('''
+      CREATE TABLE $_tablename(
+        $_columnId INTEGER PRIMARY KEY,
+        $_columnName TEXT NOT NULL
+      )
+      ''');
   }
 }
