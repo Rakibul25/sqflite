@@ -46,4 +46,10 @@ class DataBaseHelper {
     Database db = await instance.database;
     return await db.query(_tablename);
   }
+
+  Future<int> update(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    int id = row[_columnId];
+    db.update(_tablename, row, where: '$_columnId = ?', whereArgs: [id]);
+  }
 }
