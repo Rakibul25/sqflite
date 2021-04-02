@@ -53,4 +53,10 @@ class DataBaseHelper {
     return await db
         .update(_tablename, row, where: '$_columnId = ?', whereArgs: [id]);
   }
+
+  Future<int> delete(int id) async {
+    Database db = await instance.database;
+    return await db
+        .delete(_tablename, where: '$_columnId = ?', whereArgs: [id]);
+  }
 }
