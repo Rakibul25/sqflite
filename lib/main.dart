@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testsqf/bdhelper.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,9 +16,15 @@ class MyApp extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             FlatButton(
-                onPressed: () {}, child: Text('Insert'), color: Colors.red),
+                onPressed: () async {
+                  int i = await DataBaseHelper.instance
+                      .insert({DataBaseHelper.columnName: "Rakib"});
+                  print('inserted id is $i');
+                },
+                child: Text('Insert'),
+                color: Colors.red),
             FlatButton(
                 onPressed: () {}, child: Text('query'), color: Colors.blue),
             FlatButton(
