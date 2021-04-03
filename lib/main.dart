@@ -26,7 +26,13 @@ class MyApp extends StatelessWidget {
                 child: Text('Insert'),
                 color: Colors.red),
             FlatButton(
-                onPressed: () {}, child: Text('query'), color: Colors.blue),
+                onPressed: () async {
+                  List<Map<String, dynamic>> queryRows =
+                      await DataBaseHelper.instance.queryAll();
+                  print(queryRows);
+                },
+                child: Text('query'),
+                color: Colors.blue),
             FlatButton(
                 onPressed: () {}, child: Text('Update'), color: Colors.green),
             FlatButton(
