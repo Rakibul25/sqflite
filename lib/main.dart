@@ -9,6 +9,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      home: frontend(),
+    );
+  }
+}
+
+class frontend extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('test sqf'),
@@ -19,8 +28,10 @@ class MyApp extends StatelessWidget {
           children: <Widget>[
             FlatButton(
                 onPressed: () async {
-                  int i = await DataBaseHelper.instance
-                      .insert({DataBaseHelper.columnName: "Rakib"});
+                  int i = await DataBaseHelper.instance.insert({
+                    DataBaseHelper.columnName: "Rakib",
+                    DataBaseHelper.columnId: 11
+                  });
                   print('inserted id is $i');
                 },
                 child: Text('Insert'),

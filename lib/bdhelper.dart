@@ -9,7 +9,7 @@ class DataBaseHelper {
   static final _dbversion = 1;
   static final _tablename = 'myTable';
 
-  static final _columnId = '_id';
+  static final columnId = '_id';
   static final columnName = 'name';
 
   DataBaseHelper._privateConstructor();
@@ -18,6 +18,7 @@ class DataBaseHelper {
   static Database _database;
   Future<Database> get database async {
     if (_database != null) return _database;
+
     _database = await _initialDatabase();
     return database;
   }
@@ -31,7 +32,7 @@ class DataBaseHelper {
   Future _oncreate(Database db, int version) {
     db.execute('''
       CREATE TABLE $_tablename(
-        $_columnId INTEGER PRIMARY KEY,
+        $columnId INTEGER PRIMARY KEY,
         $columnName TEXT NOT NULL
       )
       ''');
@@ -49,14 +50,13 @@ class DataBaseHelper {
 
   Future<int> update(Map<String, dynamic> row) async {
     Database db = await instance.database;
-    int id = row[_columnId];
+    int id = row[columnId];
     return await db
-        .update(_tablename, row, where: '$_columnId = ?', whereArgs: [id]);
+        .update(_tablename, row, where: '$columnId = ?', whereArgs: [id]);
   }
 
   Future<int> delete(int id) async {
     Database db = await instance.database;
-    return await db
-        .delete(_tablename, where: '$_columnId = ?', whereArgs: [id]);
+    return await db.delete(_tablename, where: '$columnId = ?', whereArgs: [id]);
   }
 }
