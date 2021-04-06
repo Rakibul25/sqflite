@@ -1,7 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:testsqf/bdhelper.dart';
+import 'package:get/get.dart';
 
-void main() {
+import 'bdhelper.dart';
+import 'loginPage.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await DatabaseHelper.initDb();
   runApp(MyApp());
 }
 
@@ -9,48 +16,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: frontend(),
-    );
-  }
-}
-
-class frontend extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('test sqf'),
+    return GetMaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-                onPressed: () async {
-                  int i = await DataBaseHelper.instance.insert({
-                    DataBaseHelper.columnName: "Rakib",
-                    DataBaseHelper.columnId: 11
-                  });
-                  print('inserted id is $i');
-                },
-                child: Text('Insert'),
-                color: Colors.red),
-            FlatButton(
-                onPressed: () async {
-                  List<Map<String, dynamic>> queryRows =
-                      await DataBaseHelper.instance.queryAll();
-                  print(queryRows);
-                },
-                child: Text('query'),
-                color: Colors.blue),
-            FlatButton(
-                onPressed: () {}, child: Text('Update'), color: Colors.green),
-            FlatButton(
-                onPressed: () {}, child: Text('Delete'), color: Colors.grey),
-          ],
-        ),
-      ),
+      home: LoginPage(),
     );
   }
 }

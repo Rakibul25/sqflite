@@ -1,62 +1,68 @@
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:testsqf/userModel.dart';
 
-class DataBaseHelper {
-  static final _dbname = 'mydb.db';
-  static final _dbversion = 1;
-  static final _tablename = 'myTable';
+class DatabaseHelper {
+  static Database db;
 
-  static final columnId = '_id';
-  static final columnName = 'name';
+  static final int _version = 1;
+  static final String _tableName = 'user';
 
-  DataBaseHelper._privateConstructor();
-  static final DataBaseHelper instance = DataBaseHelper._privateConstructor();
-
-  static Database _database;
-  Future<Database> get database async {
-    if (_database != null) return _database;
-
-    _database = await _initialDatabase();
-    return database;
+  static Future<void> initDb() async {
+    if (db != null) {
+      return;
+    } else {
+      try {
+        String _path = await getDatabasesPath() + 'user.db';
+        db = await openDatabase(
+          _path,
+          version: _version,
+          onCreate: (db, version) {
+            return db.execute(
+              "CREATE TABLE $_tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,email TEXT,password TEXT, mobile TEXT, address TEXT)",
+            );
+          },
+        );
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
-  _initialDatabase() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = join(directory.path, _dbname);
-    await openDatabase(path, version: _dbversion, onCreate: _oncreate);
+  static Future<int> insert(UserModel user) async {
+    print("insert function called $user");
+
+    var b = await db.rawInsert(
+        'INSERT INTO $_tableName (name, mobile, address) VALUES(?, ?, ?)',
+        [user.name, user.mobile, user.address]);
+    print(b);
+    var c = await db.insert(_tableName, user.toJson());
+    print(c);
+    return c;
   }
 
-  Future _oncreate(Database db, int version) {
-    db.execute('''
-      CREATE TABLE $_tablename(
-        $columnId INTEGER PRIMARY KEY,
-        $columnName TEXT NOT NULL
-      )
-      ''');
+  static Future<String> delete(UserModel user) async {
+    var a = await db.delete(_tableName, where: 'id = ?', whereArgs: [user.id]);
+    if (a == 1) {
+      return "ok";
+    }
+
+    return " not Ok ";
   }
 
-  Future<int> insert(Map<String, dynamic> row) async {
-    Database db = await instance.database;
-    return await db.insert(_tablename, row);
+  static Future<List<Map<String, dynamic>>> userList() async {
+    print("query function called");
+    return db.query(_tableName);
   }
 
-  Future<List<Map<String, dynamic>>> queryAll() async {
-    Database db = await instance.database;
-    return await db.query(_tablename);
-  }
-
-  Future<int> update(Map<String, dynamic> row) async {
-    Database db = await instance.database;
-    int id = row[columnId];
-    return await db
-        .update(_tablename, row, where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  Future<int> delete(int id) async {
-    Database db = await instance.database;
-    return await db.delete(_tablename, where: '$columnId = ?', whereArgs: [id]);
+  static Future<int> update(UserModel userModel) async {
+    print("update function called");
+    var u = await db.update(_tableName, userModel.toJson());
+    // return await db.rawUpdate('''
+    // UPDATE user
+    // SET mobile = ?
+    // WHERE id = ?
+    // ''', [1, id]);
+    //
+    return u;
   }
 }
