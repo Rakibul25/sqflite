@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:testsqf/userModel.dart';
@@ -18,7 +18,7 @@ class LoginController extends GetxController {
 
   var isUpdate = false.obs;
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void onInit() {
@@ -103,8 +103,8 @@ class LoginController extends GetxController {
     model.password = pass.value.text;
 
     try {
-      UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: model.email, password: model.password);
+      // UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
+      // email: model.email, password: model.password);
       // if(user.){}
 
     } catch (e) {
