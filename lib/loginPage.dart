@@ -47,7 +47,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   // logCont.storeData();
                   // logCont.saveOrUpdate();
-                  logCont.createUser();
+                  logCont.saveUser();
                 },
                 child: Text("submit"),
               ),
